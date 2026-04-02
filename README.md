@@ -7,6 +7,7 @@ This project demonstrates a **complete machine learning pipeline** using modern 
 ### What Does This Project Do?
 
 Think of this project as an automated factory for machine learning:
+
 1. **Raw Data** → Preprocessing → **Clean Data**
 2. **Clean Data** → Training → **Trained Model**
 3. **Trained Model** → Evaluation → **Performance Reports**
@@ -20,16 +21,19 @@ The entire process is tracked, reproducible, and shareable with your team!
 ### 1. **What is DVC (Data Version Control)?**
 
 **DVC** is like Git, but for machine learning projects. While Git tracks code changes, DVC tracks:
+
 - **Data files** (large datasets)
 - **Model files** (trained ML models)
 - **Pipeline stages** (preprocessing, training, evaluation steps)
 
 **Why is this important?**
+
 - **Reproducibility**: Run the same code on the same data and get the same results
 - **Collaboration**: Team members can work with the same data without storing huge files in Git
 - **Tracking Changes**: Know exactly when your data or models changed
 
 **How it works in our project:**
+
 ```
 dvc.yaml → Describes pipeline stages (what to run and in what order)
 params.yaml → Stores parameters (settings that control model behavior)
@@ -38,17 +42,20 @@ params.yaml → Stores parameters (settings that control model behavior)
 ### 2. **What is MLflow?**
 
 **MLflow** is an experiment tracking tool. When you train a machine learning model, many things change:
+
 - Hyperparameters (settings like number of trees, tree depth)
 - Performance metrics (accuracy, precision, recall)
 - Data versions used
 - Code versions used
 
 **MLflow records all this information**, so you can:
+
 - Compare different runs (which hyperparameters worked best?)
 - Reproduce results (what settings gave us 95% accuracy?)
 - Share experiments with your team
 
 **In our project**, MLflow logs:
+
 - Best hyperparameters found
 - Accuracy score
 - Confusion matrix (detailed performance breakdown)
@@ -57,11 +64,13 @@ params.yaml → Stores parameters (settings that control model behavior)
 ### 3. **What is a Random Forest Classifier?**
 
 A **Random Forest** is a machine learning model that makes decisions by:
+
 1. Creating multiple "decision trees" (like a flowchart of yes/no questions)
 2. Each tree votes on the answer
 3. The most popular vote wins
 
 **Example decision tree:**
+
 ```
 Age > 30?
 ├─ YES → Blood Glucose > 120?
@@ -77,11 +86,13 @@ Multiple trees together = **Stronger, more accurate predictions**
 **Hyperparameters** are settings you choose BEFORE training the model. They control HOW the model learns.
 
 Common hyperparameters for Random Forest:
+
 - `n_estimators`: How many trees to create (e.g., 100, 200 trees)
 - `max_depth`: How deep each tree can grow (deeper = more complex patterns)
 - `min_samples_split`: Minimum samples needed to split a node (prevents overfitting)
 
 **Finding the best hyperparameters** is like tuning a guitar:
+
 - Too loose (few trees, shallow): Model is too simple, misses patterns
 - Too tight (many trees, deep): Model memorizes data, performs poorly on new data
 - Just right (balanced): Model learns real patterns and generalizes well
@@ -91,6 +102,7 @@ Our project uses **GridSearchCV** to automatically test different combinations!
 ### 5. **Training vs Testing Data**
 
 We split our data into two parts:
+
 - **Training Data (80%)**: Used to teach the model
 - **Testing Data (20%)**: Used to evaluate if the model really learned
 
@@ -152,6 +164,7 @@ machinelearningpipeline/
 ## 🔧 How Each Script Works
 
 ### 1. **preprocess.py** - Data Preparation
+
 ```
 Input:  data/raw/data.csv (raw dataset)
 ↓
@@ -161,11 +174,13 @@ Output: data/processed/data.csv (ready for training)
 ```
 
 **What it does:**
+
 - Reads raw CSV file
 - Cleans the data (removes headers, etc.)
 - Saves processed data
 
 ### 2. **train.py** - Model Training
+
 ```
 Input:  data/processed/data.csv (clean training data)
 ↓
@@ -180,6 +195,7 @@ Output: models/model.pkl (trained model)
 ```
 
 **Key steps:**
+
 - **GridSearchCV**: Tests combinations of hyperparameters
   - n_estimators: [100, 200]
   - max_depth: [5, 10, None]
@@ -191,6 +207,7 @@ Output: models/model.pkl (trained model)
 - **Best model is selected** and saved as pickle file
 
 ### 3. **evaluate.py** - Model Testing
+
 ```
 Input:  data/processed/data.csv (test data)
         models/model.pkl (trained model)
@@ -207,6 +224,7 @@ Output: Accuracy report
 ## 🚀 Running the Pipeline
 
 ### **Option 1: Run Everything Automatically with DVC**
+
 ```powershell
 # Install DVC if not already installed
 pip install dvc
@@ -216,12 +234,14 @@ dvc repro
 ```
 
 This automatically:
+
 1. Runs preprocessing if data changed
 2. Trains model if preprocessing changed
 3. Evaluates model if training changed
 4. Skips steps that haven't changed (very efficient!)
 
 ### **Option 2: Run Individual Scripts**
+
 ```powershell
 # Install dependencies
 pip install -r requirements.txt
@@ -241,12 +261,14 @@ python src/evaluate.py
 ## 📊 Monitoring Experiments with MLflow
 
 ### **View Experiment Results**
+
 ```powershell
 # Start MLflow UI (opens in browser)
 mlflow ui
 ```
 
 Then visit: `http://localhost:5000` to see:
+
 - All training runs
 - Hyperparameters used
 - Accuracy scores
@@ -254,7 +276,9 @@ Then visit: `http://localhost:5000` to see:
 - Classification reports
 
 ### **Compare Runs**
+
 You can see:
+
 - Which hyperparameters gave highest accuracy?
 - How did run #1 compare to run #2?
 - Trends over multiple experiments
@@ -264,7 +288,9 @@ You can see:
 ## 🔐 Security: Protecting Credentials
 
 ### **The Problem**
+
 Our code uses MLflow to track experiments. MLflow needs credentials:
+
 - Username
 - Password/Token
 - Tracking URI
@@ -272,6 +298,7 @@ Our code uses MLflow to track experiments. MLflow needs credentials:
 ❌ **NEVER hardcode credentials in Python files!** This exposes secrets to GitHub.
 
 ### **The Solution**
+
 We use a `.env` file:
 
 1. **`.env.example`** (safe to push to GitHub)
@@ -290,6 +317,7 @@ We use a `.env` file:
    ```
 
 ### **How to Set Up**
+
 1. Copy `.env.example` to `.env`
 2. Fill in your actual credentials in `.env`
 3. Python loads these automatically when scripts run
@@ -299,14 +327,14 @@ We use a `.env` file:
 
 ## 📦 Dependencies
 
-| Package | Purpose |
-|---------|---------|
-| `pandas` | Data manipulation and analysis |
-| `scikit-learn` | Machine learning algorithms |
-| `dvc` | Data versioning and pipeline |
-| `mlflow` | Experiment tracking |
+| Package         | Purpose                              |
+| --------------- | ------------------------------------ |
+| `pandas`        | Data manipulation and analysis       |
+| `scikit-learn`  | Machine learning algorithms          |
+| `dvc`           | Data versioning and pipeline         |
+| `mlflow`        | Experiment tracking                  |
 | `python-dotenv` | Load environment variables from .env |
-| `pyyaml` | Parse YAML configuration files |
+| `pyyaml`        | Parse YAML configuration files       |
 
 Install all: `pip install -r requirements.txt`
 
@@ -315,6 +343,7 @@ Install all: `pip install -r requirements.txt`
 ## 🎓 Learning Resources
 
 ### **DVC Concepts**
+
 - **Pipeline**: A series of stages that transform data
 - **Stage**: A single step (e.g., preprocessing)
 - **Dependencies**: Inputs that a stage needs
@@ -322,6 +351,7 @@ Install all: `pip install -r requirements.txt`
 - **Params**: Configuration values a stage uses
 
 ### **MLflow Concepts**
+
 - **Experiment**: A group of related runs
 - **Run**: A single training execution
 - **Metric**: A performance measurement (accuracy)
@@ -329,6 +359,7 @@ Install all: `pip install -r requirements.txt`
 - **Artifact**: Files logged (models, reports)
 
 ### **Machine Learning Concepts**
+
 - **Features (X)**: Input variables (age, glucose, etc.)
 - **Target (y)**: Output we predict (diabetes: yes/no)
 - **Train/Test Split**: Dividing data for unbiased evaluation
@@ -340,12 +371,14 @@ Install all: `pip install -r requirements.txt`
 ## 🔄 Workflow Example
 
 1. **Make a change** to hyperparameters in `params.yaml`
+
    ```yaml
    train:
-     n_estimators: 150  # Changed from 100
+     n_estimators: 150 # Changed from 100
    ```
 
 2. **Run the pipeline**
+
    ```powershell
    dvc repro
    ```
@@ -355,6 +388,7 @@ Install all: `pip install -r requirements.txt`
    - Skips preprocessing (no changes)
 
 4. **View results** in MLflow UI
+
    ```powershell
    mlflow ui
    ```
@@ -385,6 +419,7 @@ Then update `dvc.yaml` to define how the new stage connects to others.
 ## 🤝 Team Collaboration
 
 **With DVC and MLflow:**
+
 - Everyone uses the same data versions (no "my version works" problems)
 - Everyone can see all experiments and results
 - Remote storage (S3, DagsHub) keeps data synchronized
@@ -417,14 +452,11 @@ Then update `dvc.yaml` to define how the new stage connects to others.
 You now have a professional ML pipeline that tracks data, code, and experiments. Keep experimenting and iterating!
 
 Questions? Check the comments in the Python files for detailed explanations of each step.
-	
-	
 dvc stage add -n train \
-    -p train.data,train.model,train.random_state,train.n_estimators,train.max_depth \
-    -d src/train.py -d data/raw/data.csv \
-    -o models/model.pkl \
-    python src/train.py
-	
+ -p train.data,train.model,train.random_state,train.n_estimators,train.max_depth \
+ -d src/train.py -d data/raw/data.csv \
+ -o models/model.pkl \
+ python src/train.py
 dvc stage add -n evaluate \
-    -d src/evaluate.py -d models/model.pkl -d data/raw/data.csv \
-    python src/evaluate.py
+ -d src/evaluate.py -d models/model.pkl -d data/raw/data.csv \
+ python src/evaluate.py
