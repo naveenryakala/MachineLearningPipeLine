@@ -4,12 +4,11 @@ from sklearn.metrics import accuracy_score
 import yaml
 import os
 import mlflow
+from dotenv import load_dotenv
 from urllib.parse import urlparse
 
-
-os.environ['MLFLOW_TRACKING_URI'] = "https://dagshub.com/ryakalanaveenreddy/machinelearningpipeline.mlflow"
-os.environ['MLFLOW_TRACKING_USERNAME'] = "ryakalanaveenreddy"
-os.environ['MLFLOW_TRACKING_PASSWORD'] = "e62b6b60b5191c73c73dcbd6a28e0dd6b5a26ede"
+# Load environment variables from .env file
+load_dotenv()
 
 
 # Load parameters from param.yaml

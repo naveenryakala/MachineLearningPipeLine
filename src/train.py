@@ -5,15 +5,15 @@ import yaml
 from sklearn.metrics import accuracy_score,confusion_matrix,classification_report
 from mlflow.models import infer_signature
 import os
+from dotenv import load_dotenv
 
 from sklearn.model_selection import train_test_split,GridSearchCV
 from urllib.parse import urlparse
 
 import mlflow
 
-os.environ["MLFLOW_TRACKING_URI"] = "https://dagshub.com/ryakalanaveenreddy/machinelearningpipeline.mlflow"
-os.environ["MLFLOW_TRACKING_USERNAME"] = "ryakalanaveenreddy"
-os.environ["MLFLOW_TRACKING_PASSWORD"] ="e62b6b60b5191c73c73dcbd6a28e0dd6b5a26ede"
+# Load environment variables from .env file
+load_dotenv()
 
 def hyperparameter_tuning(X_train, y_train,param_grid):
     rf=RandomForestClassifier()
